@@ -1,0 +1,126 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>兄弟情书 · 张斯通专属</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="card">
+      <header class="hero">
+        <div class="badge">兄弟档 · 限定款</div>
+        <h1>张斯通，别装啦</h1>
+        <p class="subtitle">我们是兄弟，但这份兄弟情，有点想升级。</p>
+      </header>
+
+      <section class="content">
+        <p>在别人眼里，我们是铁哥们。</p>
+        <p>在我眼里，你是我的“铁甜心”。</p>
+        <p>兄弟一场，我先承认：你笑起来，像把我心门打开的钥匙。</p>
+        <p>所以我决定把“兄弟”两个字改写成：<strong>兄弟（恋）</strong>。</p>
+
+        <div class="poem">
+          <p>兄弟肩并肩，</p>
+          <p>心跳肩挨肩。</p>
+          <p>兄弟喝可乐，</p>
+          <p>我只想喝你的笑。</p>
+        </div>
+
+        <p class="wink">
+          如果你也觉得“兄弟”这个词太普通，那我们就升级成：
+          <span class="rainbow">彩虹系兄弟限定版</span>。
+        </p>
+      </section>
+
+      <section class="cta">
+        <button id="broBtn" type="button">点我确认关系</button>
+        <p id="broResult" aria-live="polite"></p>
+      </section>
+
+      <div id="loveModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="loveTitle" aria-hidden="true">
+        <div class="modal__overlay" data-close="true"></div>
+        <div class="modal__panel" role="document">
+          <h2 id="loveTitle">已确认：彩虹兄弟关系成立</h2>
+          <p class="modal__subtitle">点我可以再玩一次，爱意加满。</p>
+          <img class="modal__photo" src="bro.jpg" alt="我们的合照" />
+          <div id="emojiBurst" class="emoji-burst" aria-hidden="true"></div>
+          <button id="closeModal" type="button" class="modal__btn">关闭</button>
+        </div>
+      </div>
+
+      <footer class="foot">
+        <span>友情提示：</span>这只是玩笑，但你要是认真……也不赖。
+      </footer>
+    </main>
+
+    <script>
+      const btn = document.getElementById("broBtn");
+      const result = document.getElementById("broResult");
+      const modal = document.getElementById("loveModal");
+      const modalOverlay = modal.querySelector(".modal__overlay");
+      const closeModalBtn = document.getElementById("closeModal");
+      const emojiBurst = document.getElementById("emojiBurst");
+      const lines = [
+        "已确认：兄弟（恋）关系成立。",
+        "已确认：你是我最甜的‘兄弟’。",
+        "已确认：彩虹兄弟会，欢迎张斯通。",
+        "已确认：你笑一下，我就投降。",
+      ];
+      const emojis = ["❤", "💖", "💘", "💝", "🩷", "💕", "💞", "💓", "💟", "🌈", "🏳️‍🌈", "✨", "🫶"];
+
+      const openModal = () => {
+        modal.classList.remove("hidden");
+        modal.setAttribute("aria-hidden", "false");
+        spawnEmojis(26);
+      };
+
+      const closeModal = () => {
+        modal.classList.add("hidden");
+        modal.setAttribute("aria-hidden", "true");
+        emojiBurst.innerHTML = "";
+      };
+
+      const spawnEmojis = (count) => {
+        emojiBurst.innerHTML = "";
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        for (let i = 0; i < count; i += 1) {
+          const span = document.createElement("span");
+          span.className = "emoji";
+          span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          span.style.left = `${Math.random() * 100}%`;
+          span.style.top = `${Math.random() * 100}%`;
+          const dx = (Math.random() * 2 - 1) * width * 0.7;
+          const dy = (Math.random() * 2 - 1) * height * 0.7;
+          const rot = Math.floor(Math.random() * 720 - 360);
+          span.style.setProperty("--dx", `${dx}px`);
+          span.style.setProperty("--dy", `${dy}px`);
+          span.style.setProperty("--rot", `${rot}deg`);
+          span.style.fontSize = `${18 + Math.random() * 24}px`;
+          span.style.animationDelay = `${Math.random() * 0.3}s`;
+          span.style.animationDuration = `${1.1 + Math.random() * 1.4}s`;
+          emojiBurst.appendChild(span);
+          span.addEventListener("animationend", () => {
+            span.remove();
+          });
+        }
+      };
+
+      btn.addEventListener("click", () => {
+        const pick = lines[Math.floor(Math.random() * lines.length)];
+        result.textContent = pick;
+        openModal();
+        spawnEmojis(60);
+      });
+
+      modalOverlay.addEventListener("click", closeModal);
+      closeModalBtn.addEventListener("click", closeModal);
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !modal.classList.contains("hidden")) {
+          closeModal();
+        }
+      });
+    </script>
+  </body>
+</html>
